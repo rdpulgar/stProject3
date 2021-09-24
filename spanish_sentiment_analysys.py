@@ -1,18 +1,19 @@
-from transformers import pipeline
+# ! pip install spanish_sentiment_analysis
+
+from classifier import * 
+
 import pandas as pd
 import streamlit as st
 import time
 
-nlp = pipeline('zero-shot-classification', # spanish 
-                      model='joeddav/xlm-roberta-large-xnli') 
-
-candidate_labels = ["positivo","negativo"]
-hypothesis_template = "El sentimiento de este texto es {}."
+nlp = SentimentClassifier()
 
 def main():
 
     st.title('Coke.ai')
     st.title('Análisis de sentimiento ...')
+
+    # text = st.text_input("Expresión:")
     write_here = "Texto aqui..."
     text = st.text_area("Incluya un texto ..", write_here)
     if st.button("Analizar"):
@@ -56,10 +57,30 @@ def main():
 @st.cache
 def sentimiento(text):
     #try:
-        result = nlp(text, candidate_labels, template=hypothesis_template, multi_class=False)
-        return result[labels][0], result[scores][0]
+        conditions = {
+            1: 'Muy Malo',
+            2: 'Malo',
+            3: 'Neutro',
+            4: 'Bueno',
+            5: 'Muy bueno'
+        }
+        result = nlp.predict(text)
+        label = conditions[CheckForLess([0.1, 0.2, 0.5, 0.8, 1],result)]
+        return label, round(result,4)
     #except:
     #    return "_Error", -1
+
+@st.cache
+def CheckForLess(list1, val): 
+      
+    # traverse in the list
+    i=1
+    for x in list1: 
+          if val <= x: 
+            return i
+          else:
+            i=i+1
+    return False
 
 @st.cache
 def convert_df(df):
