@@ -36,7 +36,7 @@ def main():
         data['text'] = data['text'].astype(str)
         total_reg = len(data)
         total_reg_toproc = st.slider('indique cuantos registros quiere procesar (Tipicamente se pueden procesar 3500-4000 registros sin problema)', 1, total_reg, total_reg, 100)
-        data.drop(df.tail(total_reg-total_reg_toproc).index,inplace = True)
+        data.drop(data.tail(total_reg-total_reg_toproc).index,inplace = True)
         if st.button("Procesar Archivo CSV"):    
             #pd.read_parquet("penguin-dataset.parquet")
             #data.to_parquet("penguin-dataset.parquet")
