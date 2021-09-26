@@ -89,7 +89,7 @@ def convert_df(df):
     # Cache the conversion to prevent computation on every rerun
     return df.to_csv().encode('utf-8')
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def read_df(csv_file):
     # Cache the conversion to prevent computation on every rerun
     return pd.read_csv(csv_file,usecols=["text"])
