@@ -51,6 +51,7 @@ def main():
             if st.download_button(label="Presione para descargar archivo procesado", data=csv, file_name='_cokeai_results.csv', mime='text/csv'):
                 st.success("Descargado con éxito ..")
                 st.stop()
+            uploaded_file = None
         else:
             st.error("Aun no se ha procesado el archivo..")
     else:
